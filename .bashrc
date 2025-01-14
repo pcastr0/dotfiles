@@ -1,8 +1,4 @@
 # SOURCE GLOBAL DEFINITIONS
-if [ -f /usr/bin/fastfetch ]; then
-    fastfetch
-fi
-
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
@@ -13,6 +9,19 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
+
+if command -v mise &> /dev/null; then
+  eval "$(mise activate bash)"
+fi
+
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init bash)"
+fi
+
+if [ -f /usr/bin/fastfetch ]; then
+    fastfetch
+fi
+
 
 # User-specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
@@ -94,4 +103,5 @@ cd () {
     fi
 }
 
-eval "$(zoxide init bash)"
+# eval "$(zoxide init bash)"
+# eval "$(mise activate bash)"
