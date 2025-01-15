@@ -1,5 +1,5 @@
 " leader key is comma
-let mapleader=","
+let mapleader=" "
 
 " colorsscheme  " awesome colorsscheme
 

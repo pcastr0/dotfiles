@@ -50,12 +50,12 @@ function parse_git_branch {
 export PS1="\t \[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 # EXPORTS
-export HISTFILESIZE=100000
-export HISTSIZE=500
-export HISTTIMEFORMAT="%F %T"
-export HISTCONTROL=erasedups:ignoredups:ignorespace
-shopt -s checkwinsize histappend
-#PROMPT_COMMAND='history -a'
+#export HISTFILESIZE=100000
+#export HISTSIZE=500
+#export HISTTIMEFORMAT="%F %T"
+#export HISTCONTROL=erasedups:ignoredups:ignorespace
+#shopt -s checkwinsize histappend
+# PROMPT_COMMAND='history -a'
 
 # XDG folders
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -64,18 +64,17 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 # Auto-completion tweaks
-if [[ $- == *i* ]]; then
-    bind "set completion-ignore-case on"
-    bind "set show-all-if-ambiguous on"
-fi
+#if [[ $- == *i* ]]; then
+#    bind "set completion-ignore-case on"
+#    bind "set show-all-if-ambiguous on"
+#fi
 
 # Set default editor
 export EDITOR=nvim
 export VISUAL=nvim
 alias snano='sudo nano'
 alias svim='sudo vim'
-alias svi='sudo vi'
-alias vim='nvim'
+alias nv='nvim'
 
 # ALIASES
 if command -v bat &>/dev/null; then
@@ -90,6 +89,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+
 alias ll='ls -l'
 alias lsa='ls -la'
 alias lsf='ls -F'
@@ -102,6 +102,3 @@ cd () {
         builtin cd ~ && ls -l
     fi
 }
-
-# eval "$(zoxide init bash)"
-# eval "$(mise activate bash)"
