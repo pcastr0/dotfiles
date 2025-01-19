@@ -89,8 +89,9 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
+# Listing directories
 alias ll='ls -l'
+alias lt='tree -L 2 -F'
 alias lsa='ls -la'
 alias lsf='ls -F'
 
