@@ -47,7 +47,10 @@ function parse_git_dirty {
 function parse_git_branch {
     git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
 }
-export PS1="\t \[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+#export PS1="\[\033[32m\]\t\[\033[33m\]$(parse_git_branch)\[\033[00m\] $ "
+
+export PS1="\d \[$(tput setaf 154)\@\[\033[33m\]$(parse_git_branch)\[\033[00m\] $ "
 
 # EXPORTS
 #export HISTFILESIZE=100000
@@ -74,7 +77,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 alias snano='sudo nano'
 alias svim='sudo vim'
-alias nv='nvim'
+alias vim='nvim'
 
 # ALIASES
 if command -v bat &>/dev/null; then
@@ -98,8 +101,8 @@ alias lsf='ls -F'
 # Automatically do an ls after each cd, z, or zoxide
 cd () {
     if [ -n "$1" ]; then
-        builtin cd "$@" && ls -l
+        builtin cd "$@" && ls
     else
-        builtin cd ~ && ls -l
+        builtin cd ~ && ls
     fi
 }
