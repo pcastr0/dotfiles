@@ -1,4 +1,5 @@
 ## SOURCE GLOBAL DEFINITIONS
+
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
@@ -13,6 +14,15 @@ fi
 if [ -f /usr/bin/fastfetch ]; then
     fastfetch
 fi
+
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init bash)"
+fi
+
+if command -v mise &> /dev/null; then
+  eval "$(mise activate bash)"
+fi
+
 
 # History control
 shopt -s histappend
@@ -39,29 +49,22 @@ function parse_git_branch {
 
 export PS1="\[$(tput setaf 154)\]\@\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-# History control
-shopt -s histappend
-HISTSIZE=32768
-HISTFILESIZE="${HISTSIZE}"
-HISTTIMEFORMAT="%F %T"
-HISTCONTROL=erasedups:ignoredups:ignorespace
-
 # Set default editor
 export EDITOR=nvim
 export VISUAL=nvim
 alias svim='sudo vim'
 alias vim='nvim'
 
+
 ## ALIASES
 # File system
-# alias ls='eza -lh --group-directories-first --icons'
-# alias lsa='ls -a'
-# alias lt='eza --tree --level=2 --long --icons --git'
-# alias lta='lt -a'
+alias ls='eza -lh --group-directories-first --icons'
+alias lsa='ls -a'
+alias lt='eza --tree --level=2 --long --icons --git'
+alias lta='lt -a'
 alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
 alias fd='fdfind'
-# alias cd='z'
-alias rm='trash -v'
+#alias rm='trash -v'
 
 # Directories
 alias home='cd ~'
@@ -82,17 +85,11 @@ alias gcad='git commit -a --amend'
 ## FUNCTIONS
 # Automatically do an ls after each cd, z, or zoxide
 cd () {
-    if [ -n "$1" ]; then
-        builtin cd "$@" && ls
+    if command -v zoxide &>/dev/null; then
+        # echo "Using zoxide for cd: $*"
+        z "$@" && ls || echo "Failed to change directory with zoxide"
     else
-        builtin cd ~ && ls
+        # echo "Using builtin cd: $*"
+        builtin cd "$@" && ls || echo "Failed to change directory with builtin cd"
     fi
 }
-
-if command -v mise &> /dev/null; then
-  eval "$(mise activate bash)"
-fi
-
-if command -v zoxide &> /dev/null; then
-  eval "$(zoxide init bash)"
-fi
