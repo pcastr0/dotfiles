@@ -37,7 +37,7 @@ function parse_git_branch {
 
 #export PS1="\[\033[32m\]\t\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export PS1="\[$(tput setaf 154)\@\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+export PS1="\[$(tput setaf 154)\]\@\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 # History control
 shopt -s histappend
