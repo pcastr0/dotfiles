@@ -1,9 +1,4 @@
-# SOURCE GLOBAL DEFINITIONS
-if [ -f /usr/bin/fastfetch ]; then
-	fastfetch
-fi
-
-# Source global definitions
+## SOURCE GLOBAL DEFINITIONS
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
@@ -15,14 +10,9 @@ elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
-if command -v mise &> /dev/null; then
-  eval "$(mise activate bash)"
+if [ -f /usr/bin/fastfetch ]; then
+    fastfetch
 fi
-
-if command -v zoxide &> /dev/null; then
-  eval "$(zoxide init bash)"
-fi
-
 
 # History control
 shopt -s histappend
@@ -37,28 +27,49 @@ HISTTIMEFORMAT="%F %T"
 export PATH="./bin:$HOME/.local/bin:$HOME/bin:$PATH"
 set +h
 
-# ALIASES
+## PROMPT
+function parse_git_dirty {
+    [[ $(git status --porcelain 2>/dev/null) ]] && echo "*"
+}
+function parse_git_branch {
+    git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+}
 
+#export PS1="\[\033[32m\]\t\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+export PS1="\[$(tput setaf 154)\@\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+# History control
+shopt -s histappend
+HISTSIZE=32768
+HISTFILESIZE="${HISTSIZE}"
+HISTTIMEFORMAT="%F %T"
+HISTCONTROL=erasedups:ignoredups:ignorespace
+
+# Set default editor
+export EDITOR=nvim
+export VISUAL=nvim
+alias svim='sudo vim'
+alias vim='nvim'
+
+## ALIASES
 # File system
-alias ls='eza -lh --group-directories-first --icons'
-alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
-alias lta='lt -a'
+# alias ls='eza -lh --group-directories-first --icons'
+# alias lsa='ls -a'
+# alias lt='eza --tree --level=2 --long --icons --git'
+# alias lta='lt -a'
 alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
 alias fd='fdfind'
-alias cd='z'
+# alias cd='z'
 alias rm='trash -v'
 
 # Directories
+alias home='cd ~'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Tools
-alias n='nvim'
-alias g='git'
-alias d='docker'
-alias r='rails'
 alias bat='bat'
 alias lzg='lazygit'
 alias lzd='lazydocker'
@@ -68,25 +79,7 @@ alias gcm='git commit -m'
 alias gcam='git commit -a -m'
 alias gcad='git commit -a --amend'
 
-# PROMPT
-function parse_git_dirty {
-    [[ $(git status --porcelain 2>/dev/null) ]] && echo "*"
-}
-function parse_git_branch {
-    git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
-}
-
-#export PS1="\[\033[32m\]\t\[\033[33m\]$(parse_git_branch)\[\033[00m\] $ "
-
-export PS1="\[$(tput setaf 154)\@\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
-
-# Set default editor
-export EDITOR=nvim
-export VISUAL=nvim
-alias svim='sudo vim'
-alias vim='nvim'
-
-# FUNCTIONS
+## FUNCTIONS
 # Automatically do an ls after each cd, z, or zoxide
 cd () {
     if [ -n "$1" ]; then
@@ -95,3 +88,11 @@ cd () {
         builtin cd ~ && ls
     fi
 }
+
+if command -v mise &> /dev/null; then
+  eval "$(mise activate bash)"
+fi
+
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init bash)"
+fi
