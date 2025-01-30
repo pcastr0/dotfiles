@@ -58,7 +58,8 @@ alias vim='nvim'
 
 ## ALIASES
 # File system
-alias ls='eza -lh --group-directories-first --icons'
+alias ls='eza --group-directories-first --icons'
+alias ll='eza -lh --group-directories-first --icons'
 alias lsa='ls -a'
 alias lt='eza --tree --level=2 --long --icons --git'
 alias lta='lt -a'
